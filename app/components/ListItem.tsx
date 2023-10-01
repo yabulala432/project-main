@@ -5,19 +5,24 @@ interface ListItemProps {
   title: string;
   subtitle?: string;
   onPress?: () => void;
+  style?: object;
+  rightIcon?: React.ReactNode | null;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ title, subtitle, onPress }) => {
+const ListItem: React.FC<ListItemProps> = ({
+  title,
+  subtitle,
+  onPress,
+  style,
+  rightIcon,
+}) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.5}
-      style={styles.container}
-    >
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
+      {rightIcon}
     </TouchableOpacity>
   );
 };
@@ -30,6 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
+    justifyContent: "space-between",
   },
   textContainer: {
     flex: 1,

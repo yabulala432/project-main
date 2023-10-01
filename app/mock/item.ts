@@ -1,17 +1,19 @@
 export const KDASE = [
   {
-    amharic: "./images/emne_beha_amharic.png",
+    amharic:
+      "https://media.licdn.com/dms/image/C5612AQHnhq-v9gO0UQ/article-cover_image-shrink_600_2000/0/1593849010765?e=2147483647&v=beta&t=yY5CERbkHuWoO0s52AJ3zhfnRKVJ1Pj2kMEi1tEU5Ew",
     description: "description long text here ",
-    geez: "./images/emne_beha_geez.png",
+    geez: "https://images.squarespace-cdn.com/content/v1/52ef14dfe4b01409c7420577/1598125589681-X6K5HYDTPDAQJM3I1YAF/00ebf219-9bed-42f1-b17a-f6ce2c4126aa.jpg",
     hymn: "ግዕዝ",
     hymnLabel: ["ግዕዝ", "ቡርክት", "ኃ", " ቤተ"],
     title: "እምነ በሓ",
   },
   {
-    amharic: "./images/meskel_abrha_amharic.png",
+    amharic:
+      "https://yt3.googleusercontent.com/ytc/AOPolaQdJYGmXTNsTo_wj7rpIkI7y_rcAd_RwjFKW6uT=s900-c-k-c0x00ffffff-no-rj",
     description: "description long text here ",
     hymn: "ግዕዝ",
-    geez: "./images/meskel_abrha_geez.png",
+    geez: "https://i.pinimg.com/originals/b4/a8/78/b4a878fd65c34c6f1bafacae95104939.jpg",
     hymnLabel: ["ግዕዝ", "ቡርክት", "ኃ", " ቤተ"],
     title: "መስቀል አብርሃ",
   },

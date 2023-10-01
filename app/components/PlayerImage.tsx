@@ -6,14 +6,14 @@ interface props {
   style?: object;
 }
 
-const PlayerScreenImage = ({ imageUrl, style }: props) => {
+const PlayerImage = ({ imageUrl, style }: props) => {
   const { width } = Dimensions.get("window");
   return (
     <View style={styles.container}>
       <Image
         source={{ uri: imageUrl }}
-        resizeMode="contain"
-        width={width - 10}
+        resizeMode="stretch"
+        width={width - 20}
         height={350}
         style={[styles.imageStyle, style]}
       />
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlayerScreenImage;
+export default PlayerImage;

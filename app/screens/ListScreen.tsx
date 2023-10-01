@@ -30,22 +30,19 @@ const ListScreen = ({ navigation, route }: props) => {
     setRouteData(route.params.item.data);
   }, [route.params.item]);
 
-  // console.log({ data: routeData?.data });
-
   return (
     <View style={styles.container}>
       {routeData &&
         routeData?.map((item, index) => (
           <ListItem
+            key={index}
+            title={item.title}
+            subtitle={item.hymn}
             onPress={() =>
               navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, {
                 item: item,
               })
             }
-            key={index}
-            title={item.title}
-            subtitle={item.hymn}
-            // description={item.description}
           />
         ))}
     </View>
