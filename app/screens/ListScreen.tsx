@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import ListItem from "../components/ListItem";
+import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 
 interface props {
   navigation: any;
@@ -36,6 +37,11 @@ const ListScreen = ({ navigation, route }: props) => {
       {routeData &&
         routeData?.map((item, index) => (
           <ListItem
+            onPress={() =>
+              navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, {
+                item: item,
+              })
+            }
             key={index}
             title={item.title}
             subtitle={item.hymn}

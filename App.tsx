@@ -1,5 +1,5 @@
-import { MainNav } from "./app/navigator/MainNav";
+import { TabNav } from "./app/navigator/TabNav";
 
 export default function App() {
-  return <MainNav />;
+  return <TabNav />;
 }
