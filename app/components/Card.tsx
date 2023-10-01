@@ -4,11 +4,12 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 interface props {
   title: string;
   imageUrl: string;
+  onPress?: () => void;
 }
 
-export const Card = ({ title, imageUrl }: props) => {
+export const Card = ({ title, imageUrl, onPress }: props) => {
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity onPress={onPress} style={styles.card}>
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>

@@ -4,12 +4,15 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import Screen from "../components/Screen";
 import { Card } from "../components/Card";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: any) => {
   return (
     <Screen style={styles.screen}>
       <ScrollView>
         <View style={styles.container}>
           <Card
+            onPress={() => {
+              navigation.navigate("Player");
+            }}
             title="Red Jacket"
             imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
           />
