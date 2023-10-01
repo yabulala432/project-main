@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }: any) => {
               key={index}
               imageUrl={item.imageUrl}
               onPress={() =>
-                navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, { item })
+                navigation.navigate(SCREEN_NAMES.LIST_SCREEN, { item })
               }
             />
           ))}

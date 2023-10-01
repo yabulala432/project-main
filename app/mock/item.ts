@@ -1,19 +1,19 @@
 export const KDASE = [
   {
-    amharic: "ሰላም ላንቺ እናታችን ቅድስት ቤተክርስቲያን",
+    amharic: "./images/emne_beha_amharic.png",
     description: "description long text here ",
-    geez: "እምነ በሓ ቅድስት ቤተክርስቲያን",
+    geez: "./images/emne_beha_geez.png",
     hymn: "ግዕዝ",
     hymnLabel: ["ግዕዝ", "ቡርክት", "ኃ", " ቤተ"],
     title: "እምነ በሓ",
   },
   {
-    title: "መስቀል አብርሃ",
-    geez: "መስቀል አብርሃ በከዋክብት አሠርገወ ሰማየ",
-    amharic: "መስቀል በከዋክብት መካከል አበራ ሰማዩንም አሸበረቀው",
+    amharic: "./images/meskel_abrha_amharic.png",
     description: "description long text here ",
     hymn: "ግዕዝ",
+    geez: "./images/meskel_abrha_geez.png",
     hymnLabel: ["ግዕዝ", "ቡርክት", "ኃ", " ቤተ"],
+    title: "መስቀል አብርሃ",
   },
 ];
 
@@ -45,7 +45,7 @@ export const Main = [
   {
     title: "አርባእት",
     imageUrl:
-      "https://1.bp.blogspot.com/-wk83N1RIdTs/YVlH3WnwgxI/AAAAAAAABx0/xUs0NADYRdEG_6pALYuIWFe5AL3Tz2UqQCLcBGAsYHQ/s900/242909859_6146155888792849_6695055734973482083_n.jpg",
+      "https://lh3.googleusercontent.com/-rhhCtG4yGKI/VlVCoCf1SuI/AAAAAAAABmk/aIIgCUmkdV8/s640/ProcCross315r.jpg",
     data: KDASE,
   },
   {
