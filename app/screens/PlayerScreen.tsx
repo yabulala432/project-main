@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 interface props {
   navigation: any;
@@ -18,7 +18,7 @@ const PlayerScreen = ({ navigation, route }: props) => {
     setRouteData(route.params.item);
   }, [route.params.item]);
 
-  console.log(routeData?.data);
+  // console.log({ data: routeData?.data });
 
   return (
     <View style={styles.container}>

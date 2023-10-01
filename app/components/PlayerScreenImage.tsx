@@ -1,5 +1,5 @@
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import React from "react";
-import { Image, StyleSheet, View, Dimensions } from "react-native";
 
 interface props {
   imageUrl: string;
@@ -7,7 +7,7 @@ interface props {
 }
 
 const PlayerScreenImage = ({ imageUrl, style }: props) => {
-  const { width, height } = Dimensions.get("window");
+  const { width } = Dimensions.get("window");
   return (
     <View style={styles.container}>
       <Image

@@ -19,6 +19,13 @@ export const MainNav = () => {
           component={HomeScreen}
         />
         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "green",
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+          }}
           name={SCREEN_NAMES.PLAYER_SCREEN}
           component={PlayerScreen}
         />
