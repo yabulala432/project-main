@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 
-const PlayerScreen = () => {
+interface props {
+  navigation: any;
+  route: any;
+}
+
+const PlayerScreen = ({ navigation, route }: props) => {
+  const [routeData, setRouteData] = useState<any>();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: route.params.item.title,
+    });
+  }, []);
+
+  useEffect(() => {
+    setRouteData(route.params.item);
+  }, [route.params.item]);
+
+  console.log(routeData?.data);
+
   return (
     <View style={styles.container}>
       <Text>Player Screen</Text>
@@ -10,7 +28,9 @@ const PlayerScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    // alignItems: "center",
+  },
 });
 
 export default PlayerScreen;

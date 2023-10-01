@@ -22,6 +22,7 @@ export const Main = [
     title: "ሥርዓተ ቅዳሴ",
     imageUrl:
       "https://i.ytimg.com/vi/s3004WPbNYg/hqdefault.jpg?days_since_epoch=19594",
+    data: KDASE,
   },
   {
     title: "ሰዓታት",

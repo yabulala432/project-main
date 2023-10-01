@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import Screen from "../components/Screen";
 import { Card } from "../components/Card";
 import { Main } from "../mock/item";
+import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 
 const HomeScreen = ({ navigation }: any) => {
   return (
@@ -11,7 +12,14 @@ const HomeScreen = ({ navigation }: any) => {
       <ScrollView>
         <View style={styles.container}>
           {Main.map((item, index) => (
-            <Card title={item.title} key={index} imageUrl={item.imageUrl} />
+            <Card
+              title={item.title}
+              key={index}
+              imageUrl={item.imageUrl}
+              onPress={() =>
+                navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, { item })
+              }
+            />
           ))}
         </View>
       </ScrollView>
