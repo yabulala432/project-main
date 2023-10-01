@@ -3,59 +3,16 @@ import { ScrollView, StyleSheet, View } from "react-native";
 
 import Screen from "../components/Screen";
 import { Card } from "../components/Card";
+import { Main } from "../mock/item";
 
 const HomeScreen = ({ navigation }: any) => {
   return (
     <Screen style={styles.screen}>
       <ScrollView>
         <View style={styles.container}>
-          <Card
-            onPress={() => {
-              navigation.navigate("Player");
-            }}
-            title="Red Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Blue Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Green Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/16aa.jpg?v=1665705255"
-          />
-          <Card
-            title="Red Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Blue Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Green Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/16aa.jpg?v=1665705255"
-          />
-          <Card
-            title="Blue Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Green Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/16aa.jpg?v=1665705255"
-          />
-          <Card
-            title="Red Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Blue Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/17b.jpg?v=1665705255"
-          />
-          <Card
-            title="Green Jacket"
-            imageUrl="https://www.betesamuel.com/cdn/shop/products/16aa.jpg?v=1665705255"
-          />
+          {Main.map((item, index) => (
+            <Card title={item.title} key={index} imageUrl={item.imageUrl} />
+          ))}
         </View>
       </ScrollView>
     </Screen>

@@ -38,10 +38,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    padding: 10,
+    padding: 5,
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
