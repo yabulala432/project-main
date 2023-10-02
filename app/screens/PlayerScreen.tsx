@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppButton from "../components/AppButton";
 import ListItem from "../components/ListItem";
 import PlayerImage from "../components/PlayerImage";
 import Screen from "../components/Screen";
+import ProgressBar from "../components/ProgressBar";
+import AppSlider from "../components/AppSlider";
 
 interface props {
   route: any;
@@ -21,13 +23,13 @@ interface routeDataProps {
 }
 
 const PlayerScreen = ({ route }: props) => {
+  console.log({ route: route?.params?.item });
   const [routeData, setRouteData] = useState<routeDataProps>(
     route?.params?.item
   );
 
   useEffect(() => {
     setRouteData(route?.params?.item);
-    console.log({ routeData });
   }, [route?.params?.item]);
 
   const [imageState, setImageState] = useState<{
@@ -90,7 +92,47 @@ const PlayerScreen = ({ route }: props) => {
         </View>
       </View>
 
-      <View style={styles.bottomContainer}></View>
+      <View style={styles.bottomContainer}>
+        <AppSlider
+          maximumValue={100}
+          minimumValue={0}
+          onValueChange={() => {}}
+          value={20}
+          onSlidingComplete={() => {}}
+        />
+        <View style={styles.playerButtons}>
+          <AntDesign
+            name="stepbackward"
+            color="black"
+            size={30}
+            style={{ marginHorizontal: 10 }}
+          />
+          <AntDesign
+            name="banckward"
+            color="black"
+            size={30}
+            style={{ marginHorizontal: 10 }}
+          />
+          <AntDesign
+            name="caretright"
+            color="black"
+            size={50}
+            style={{ marginHorizontal: 10 }}
+          />
+          <AntDesign
+            name="forward"
+            color="black"
+            size={30}
+            style={{ marginHorizontal: 10 }}
+          />
+          <AntDesign
+            name="stepforward"
+            color="black"
+            size={30}
+            style={{ marginHorizontal: 10 }}
+          />
+        </View>
+      </View>
     </Screen>
   );
 };
@@ -113,7 +155,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "dodgerblue",
+    // backgroundColor: "dodgerblue",
+  },
+  playerButtons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    alignItems: "center",
+    // backgroundColor: "red",
   },
 });
 
