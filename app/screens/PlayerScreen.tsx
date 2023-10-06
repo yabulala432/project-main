@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Text } from "react-native";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppButton from "../components/AppButton";
+import AppSlider from "../components/AppSlider";
 import ListItem from "../components/ListItem";
 import PlayerImage from "../components/PlayerImage";
 import Screen from "../components/Screen";
-import ProgressBar from "../components/ProgressBar";
-import AppSlider from "../components/AppSlider";
 
 interface props {
   route: any;
@@ -40,6 +39,7 @@ const PlayerScreen = ({ route }: props) => {
     imageUrl: routeData?.amharic,
   });
   if (!routeData) return null;
+
   return (
     <Screen style={styles.container}>
       <PlayerImage imageUrl={imageState.imageUrl} />
@@ -101,36 +101,47 @@ const PlayerScreen = ({ route }: props) => {
           onSlidingComplete={() => {}}
         />
         <View style={styles.playerButtons}>
-          <AntDesign
-            name="stepbackward"
-            color="black"
-            size={30}
-            style={{ marginHorizontal: 10 }}
-          />
-          <AntDesign
-            name="banckward"
-            color="black"
-            size={30}
-            style={{ marginHorizontal: 10 }}
-          />
-          <AntDesign
-            name="caretright"
-            color="black"
-            size={50}
-            style={{ marginHorizontal: 10 }}
-          />
-          <AntDesign
-            name="forward"
-            color="black"
-            size={30}
-            style={{ marginHorizontal: 10 }}
-          />
-          <AntDesign
-            name="stepforward"
-            color="black"
-            size={30}
-            style={{ marginHorizontal: 10 }}
-          />
+          <TouchableOpacity>
+            <AntDesign
+              name="stepbackward"
+              color="black"
+              size={30}
+              style={{ marginHorizontal: 10 }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <AntDesign
+              name="banckward"
+              color="black"
+              size={30}
+              style={{ marginHorizontal: 10 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <AntDesign
+              name="caretright"
+              color="black"
+              size={50}
+              style={{ marginHorizontal: 10 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <AntDesign
+              name="forward"
+              color="black"
+              size={30}
+              style={{ marginHorizontal: 10 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <AntDesign
+              name="stepforward"
+              color="black"
+              size={30}
+              style={{ marginHorizontal: 10 }}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </Screen>

@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { Card } from "../components/Card";
-import { Main } from "../mock/item";
+import { Main } from "./item";
 import Screen from "../components/Screen";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 

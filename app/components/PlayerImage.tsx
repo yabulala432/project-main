@@ -2,16 +2,18 @@ import { Dimensions, Image, StyleSheet, View } from "react-native";
 import React from "react";
 
 interface props {
-  imageUrl: string;
+  imageUrl?: string;
   style?: object;
+  source?: any;
 }
 
-const PlayerImage = ({ imageUrl, style }: props) => {
+const PlayerImage = ({ imageUrl, style, source }: props) => {
   const { width } = Dimensions.get("window");
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: imageUrl }}
+        // @ts-ignore
+        source={source ? source : { uri: imageUrl }}
         resizeMode="stretch"
         width={width - 20}
         height={350}
