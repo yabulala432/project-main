@@ -1,5 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import SCREEN_NAMES from "./SCREEN_NAMES";
 import { StackNav } from "./StackNav";
@@ -7,6 +8,7 @@ import PlayerScreen from "../screens/PlayerScreen";
 import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 export const TabNav = () => {
   return (
     <NavigationContainer>

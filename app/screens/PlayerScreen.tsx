@@ -47,7 +47,6 @@ const PlayerScreen = ({ route, navigation }: props) => {
           setPlaying(false);
         });
       }
-      // console.log({ playbackPosition, duration });
     }, 1000);
     audioPlayer.getDuration();
     return () => clearInterval(intervalId);
@@ -118,7 +117,10 @@ const PlayerScreen = ({ route, navigation }: props) => {
     <Screen style={styles.container}>
       <View style={styles.upperContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate(SCREEN_NAMES.LIST_SCREEN)}
+          onPress={() => {
+            audioPlayer.stop();
+            navigation.navigate(SCREEN_NAMES.LIST_SCREEN);
+          }}
           style={styles.upperIcons}
         >
           <MaterialCommunityIcons name="arrow-left" size={20} color="white" />
