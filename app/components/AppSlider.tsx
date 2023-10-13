@@ -12,9 +12,11 @@ interface SliderProps {
   maximumTrackTintColor?: string;
   thumbTintColor?: string;
   onSlidingComplete?: (value: number) => void;
+  style?: object;
 }
 
 const AppSlider: React.FC<SliderProps> = ({
+  style,
   value,
   minimumValue,
   maximumValue,
@@ -33,7 +35,7 @@ const AppSlider: React.FC<SliderProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Slider
         style={styles.slider}
         minimumValue={minimumValue}

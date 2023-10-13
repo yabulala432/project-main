@@ -1,50 +1,37 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useLayoutEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 import ListItem from "../components/ListItem";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
+import { useKdaseTitle } from "../hooks/useKdase";
 
 interface props {
   navigation: any;
   route: any;
 }
 
-interface routeDataProps {
-  amharic: string;
-  geez: string;
-  description: string;
-  hymn: string;
-  hymnLabel: Array<string>;
-  title: string;
-}
-
 const ListScreen = ({ navigation, route }: props) => {
-  const [routeData, setRouteData] = useState<routeDataProps[]>();
   useLayoutEffect(() => {
     navigation.setOptions({
       title: route.params.item.title,
     });
   }, []);
 
-  useEffect(() => {
-    setRouteData(route.params.item.data);
-  }, [route.params.item]);
+  const { data, loading } = useKdaseTitle();
+
+  // console.log(data);
 
   return (
     <View style={styles.container}>
-      {routeData &&
-        routeData?.map((item, index) => (
-          <ListItem
-            key={index}
-            title={item.title}
-            subtitle={item.hymn}
-            onPress={() =>
-              navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, {
-                item: item,
-              })
-            }
-          />
-        ))}
+      {data.map((item, index) => (
+        <ListItem
+          key={index}
+          title={item}
+          onPress={() => {
+            navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, { item });
+          }}
+        />
+      ))}
     </View>
   );
 };
