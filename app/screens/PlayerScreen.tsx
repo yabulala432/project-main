@@ -9,6 +9,7 @@ import PlayerImage from "../components/PlayerImage";
 import Screen from "../components/Screen";
 import AudioPlayerService from "../services/AudioPlayerService";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
+import AppText from "../components/AppText";
 
 const url = endpoint;
 interface props {
@@ -151,9 +152,9 @@ const PlayerScreen = ({ route, navigation }: props) => {
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
+          <AppText style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
             {routeData}
-          </Text>
+          </AppText>
           <Text style={{ color: "grey", fontSize: 17 }}></Text>
         </View>
       </View>
@@ -167,10 +168,12 @@ const PlayerScreen = ({ route, navigation }: props) => {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={{ color: "white" }}>
+            <AppText style={{ color: "white" }}>
               {formatPlaybackPosition(playbackPosition)}
-            </Text>
-            <Text style={{ color: "white" }}>{formatDuration(duration)}</Text>
+            </AppText>
+            <AppText style={{ color: "white" }}>
+              {formatDuration(duration)}
+            </AppText>
           </View>
           <Slider
             style={{ width: "100%", height: 40 }}

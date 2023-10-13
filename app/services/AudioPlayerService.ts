@@ -21,7 +21,7 @@ class AudioPlayerService {
       playsInSilentModeIOS: true,
       playThroughEarpieceAndroid: false,
       shouldDuckAndroid: true,
-      staysActiveInBackground: true,
+      // staysActiveInBackground: true,
     });
 
     this.loadSound(this.soundObj).then((response) => {
@@ -59,7 +59,7 @@ class AudioPlayerService {
       if (this.duration === this.playbackPosition) {
         setTimeout(() => {
           this.stop();
-        }, 200);
+        }, 250);
       }
     }
   };
