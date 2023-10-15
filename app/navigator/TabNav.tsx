@@ -4,6 +4,7 @@ import React from "react";
 import ListScreen from "../screens/ListScreen";
 import SCREEN_NAMES from "./SCREEN_NAMES";
 import PlayerScreen from "../screens/PlayerScreen";
+import MusicPlayer from "../screens/MusicPlayer";
 
 const Tab = createBottomTabNavigator();
 export const TabNav = ({ route }: any) => {

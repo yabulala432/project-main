@@ -8,42 +8,32 @@ import {
   Text,
   Animated,
   NativeSyntheticEvent,
+  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
+import { data, fetchAll } from "../services/fetchService";
+import AppButton from "../components/AppButton";
 
+const { width } = Dimensions.get("window");
 
-const { width, height } = Dimensions.get("window");
+const MusicPlayer = ({ route }: any) => {
+  const [songs, setSongs] = useState<data[]>([]);
+  const [geezAmhImage, setGeezAmhImage] = useState<"geez" | "amharic">("geez");
 
-const setUpPlayer = async () => {
-  try {
-    // await TrackPlayer.setupPlayer();
-    // await TrackPlayer.add(songs);
-  } catch (error) {
-    console.log(error, "musicPlayer.tsx");
-  }
-};
-
-const togglePlayback = async (playbackState: any) => {
-  console.log("abcd");
-  // const currentTrack = await TrackPlayer.getCurrentTrack();
-  // if (currentTrack != null) {
-  // if (playbackState === State.Paused) {
-  //   await TrackPlayer.play();
-  // } else {
-  //   await TrackPlayer.pause();
-  // }
-  // }
-};
-
-// const playbackState = usePlaybackState();
-
-const MusicPlayer = ({songs}: any) => {
+  const fetchData = async () => {
+    const data: data[] = await fetchAll(route.params.item.name);
+    setSongs(data);
+    console.log(data[0].amharicImage);
+    return data;
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // togglePlayback(playbackState);
     scrollX.addListener(({ value }) => {
       const index = Math.floor(value / width);
       setCurrentIndex(index);
@@ -60,30 +50,7 @@ const MusicPlayer = ({songs}: any) => {
     // console.log({currentIndex});
   }
 
-  const renderSongs = ({ item, index }: any) => {
-    const inputRange = [
-      (index - 1) * width,
-      index * width,
-      (index + 1) * width,
-    ];
-
-    const opacity = scrollX.interpolate({
-      inputRange,
-      outputRange: [0, 1, 0],
-    });
-
-    return (
-      <Animated.View style={[styles.mainImageWrapper, styles.elevation]}>
-        <Image
-          source={item.artwork}
-          width={300}
-          height={340}
-          resizeMode="stretch"
-          style={styles.musicImage}
-        />
-      </Animated.View>
-    );
-  };
+  //   const renderSongs =
 
   return (
     <View style={styles.container}>
@@ -91,8 +58,54 @@ const MusicPlayer = ({songs}: any) => {
         {/* image */}
         <Animated.FlatList
           data={songs}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderSongs}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item, index }) => {
+            const inputRange = [
+              (index - 1) * width,
+              index * width,
+              (index + 1) * width,
+            ];
+
+            const opacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0, 1, 0],
+            });
+
+            return (
+              <Animated.View
+                style={[styles.mainImageWrapper, styles.elevation]}
+              >
+                <Image
+                  source={{
+                    uri:
+                      geezAmhImage === "geez"
+                        ? item.geezImage
+                        : item.amharicImage,
+                  }}
+                  width={300}
+                  height={340}
+                  resizeMode="stretch"
+                  style={styles.musicImage}
+                />
+                <AppButton
+                  style={{
+                    position: "relative",
+                    top: 10,
+                    right: 10,
+                    width: 100,
+                    height: 50,
+                    alignSelf: "center",
+                  }}
+                  title={geezAmhImage}
+                  onPress={() =>
+                    setGeezAmhImage(
+                      geezAmhImage === "amharic" ? "geez" : "amharic"
+                    )
+                  }
+                />
+              </Animated.View>
+            );
+          }}
           horizontal
           pagingEnabled={true}
           scrollEventThrottle={16}
@@ -107,17 +120,12 @@ const MusicPlayer = ({songs}: any) => {
           showsHorizontalScrollIndicator={false}
           centerContent
         />
-        {/* <Text>abcd</Text> */}
 
-        {/* song content */}
-        <View>
+        {/* <View>
           <Text style={[styles.songTitle, styles.songContent]}>
             {songs[currentIndex].title}
           </Text>
-          <Text style={[styles.artistName, styles.songContent]}>
-            {songs[currentIndex].artist}
-          </Text>
-        </View>
+        </View> */}
 
         {/* slider */}
         <View>
@@ -147,17 +155,7 @@ const MusicPlayer = ({songs}: any) => {
           <TouchableOpacity
           // onPress={() => togglePlayback(playbackState)}
           >
-            <Ionicons
-              name={
-                // playbackState === State.Playing
-                //
-                //  ? "ios-play-circle"
-                // :
-                "ios-pause-circle"
-              }
-              size={75}
-              color="#ffd369"
-            />
+            <Ionicons name={"ios-pause-circle"} size={75} color="#ffd369" />
           </TouchableOpacity>
           <TouchableOpacity>
             <Ionicons
