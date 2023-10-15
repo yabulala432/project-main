@@ -1,31 +1,51 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
 
+import ListScreen from "../screens/ListScreen";
 import SCREEN_NAMES from "./SCREEN_NAMES";
-import { StackNav } from "./StackNav";
 import PlayerScreen from "../screens/PlayerScreen";
-import { NavigationContainer } from "@react-navigation/native";
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-export const TabNav = () => {
+export const TabNav = ({ route }: any) => {
+  console.log({ route });
+  const { item } = route.params;
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name={SCREEN_NAMES.MAIN_SCREEN}
-          component={StackNav}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name={SCREEN_NAMES.PLAYER_SCREEN}
-          component={PlayerScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "green",
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+        }}
+        name={SCREEN_NAMES.LIST_SCREEN}
+        component={ListScreen}
+        initialParams={{ item }}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+        }}
+        name={SCREEN_NAMES.PLAYER_SCREEN}
+        component={PlayerScreen}
+        initialParams={{ item }}
+      />
+    </Tab.Navigator>
   );
 };
+
+// screenOptions={({ route }) => {
+//   return {
+//     tabBarIcon: ({ focused, color, size }: any) => {
+//       let iconName = "list";
+//       if (route.name === SCREEN_NAMES.HOME_SCREEN) {
+//         iconName = focused ? "home" : "home-outline";
+//       } else if (route.name === SCREEN_NAMES.LIST_SCREEN) {
+//         iconName = focused ? "list" : "list-outline";
+//       }
+//       return <Ionicons name={iconName} size={size} color={color} />;
+//     },
+//   };
+// }}

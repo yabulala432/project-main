@@ -3,4 +3,5 @@ export default Object.freeze({
   PLAYER_SCREEN: "PlayerScreen",
   LIST_SCREEN: "ListScreen",
   MAIN_SCREEN: "MainScreen",
+  PLAYER_AND_LIST_SCREEN: "PlayerAndListScreen",
 });

@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 
 import AppButton from "../components/AppButton";
+import AppText from "../components/AppText";
 import { endpoint } from "../env/urls";
 import PlayerImage from "../components/PlayerImage";
 import Screen from "../components/Screen";
-import AudioPlayerService from "../services/AudioPlayerService";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
-import AppText from "../components/AppText";
+import { AudioPlayerContext } from "../contexts/AudioPlayerContext";
 
 const url = endpoint;
 interface props {
@@ -18,11 +18,17 @@ interface props {
 }
 
 const PlayerScreen = ({ route, navigation }: props) => {
-  const audioPlayer = useMemo(() => {
-    return new AudioPlayerService({
-      uri: `${endpoint}/geez/audio/${route?.params?.item}`,
-    });
-  }, [route?.params?.item]);
+  const {
+    fastForward,
+    isPlaying,
+    loadAudio,
+    pauseAudio,
+    playbackDuration,
+    playbackPosition,
+    playPauseLoadedAudio: playLoadedAudio,
+    rewind,
+    seek,
+  } = useContext(AudioPlayerContext);
 
   const [imageState, setImageState] = useState<{
     buttonTitle: "አማርኛ" | "ግእዝ";
@@ -32,33 +38,17 @@ const PlayerScreen = ({ route, navigation }: props) => {
     imageUrl: "amharic",
   });
   const routeData = route?.params?.item;
-  const [playbackPosition, setPlaybackPosition] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [playing, setPlaying] = useState<boolean>(false);
+
+  const [position, setPosition] = useState<string>("00:00");
 
   if (!routeData) return null;
 
   useEffect(() => {
-    const intervalId = setInterval(async () => {
-      const newPosition = audioPlayer.getCurrentPlaybackPosition();
-      setPlaybackPosition(newPosition);
-      if (playbackPosition !== 0 && playbackPosition === duration) {
-        await audioPlayer.stop().then(() => {
-          setPlaying(false);
-        });
-      }
-    }, 1000);
-    audioPlayer.getDuration();
-    return () => clearInterval(intervalId);
-  }, []);
+    loadAudio({ uri: `${endpoint}/geez/audio/${route?.params?.item}` });
+  }, [route?.params?.item]);
 
-  useEffect(() => {
-    if (formatDuration(duration) === formatPlaybackPosition(playbackPosition)) {
-      setPlaying(false);
-    }
-  }, [playbackPosition]);
-
-  const formatPlaybackPosition = (position: number): string => {
+  const formatPlaybackPosition = (position: number | undefined): string => {
+    if (!position) return "00:00";
     const seconds = Math.floor(position / 1000);
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -68,45 +58,14 @@ const PlayerScreen = ({ route, navigation }: props) => {
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 
-  const handlePlay = async () => {
-    if (!playing) {
-      await audioPlayer.play().then(() => {
-        setPlaying(true);
-      });
-      handleGetDuration();
-    }
-  };
+  useEffect(() => {
+    setPosition(formatDuration(playbackPosition));
+  }, [playbackPosition]);
 
-  const handlePause = async () => {
-    await audioPlayer.pause().then(() => {
-      setPlaying(false);
-    });
-  };
-
-  const handleFastForward = async () => {
-    await audioPlayer.fastForward();
-  };
-
-  const handleRewind = async () => {
-    await audioPlayer.rewind();
-  };
-
-  const handleSetPlaybackPosition = async (position: number) => {
-    await audioPlayer.setPlaybackPosition(position);
-    setPlaybackPosition(position);
-  };
-
-  const handleGetDuration = () => {
-    const duration = audioPlayer.getDuration();
-    setDuration(duration);
-    // if(duration === )
-    return duration;
-  };
-
-  const formatDuration = (duration: number): string => {
-    const seconds = Math.floor(duration / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+  const formatDuration = (seconds: number | undefined): string => {
+    if (!seconds) return "00:00";
+    const minutes = Math.floor(seconds! / 60);
+    const remainingSeconds = seconds! % 60;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
     const formattedSeconds =
       remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
@@ -118,7 +77,6 @@ const PlayerScreen = ({ route, navigation }: props) => {
       <View style={styles.upperContainer}>
         <TouchableOpacity
           onPress={() => {
-            audioPlayer.stop();
             navigation.navigate(SCREEN_NAMES.LIST_SCREEN);
           }}
           style={styles.upperIcons}
@@ -170,43 +128,41 @@ const PlayerScreen = ({ route, navigation }: props) => {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <AppText style={{ color: "white" }}>
-              {formatPlaybackPosition(playbackPosition)}
-            </AppText>
-            <AppText style={{ color: "white" }}>
-              {formatDuration(duration)}
+            <AppText style={styles.counterStyle}>{position}</AppText>
+            <AppText style={styles.counterStyle}>
+              {playbackDuration ? formatDuration(playbackDuration) : "00:00"}
             </AppText>
           </View>
           <Slider
             style={{ width: "100%", height: 40 }}
             minimumValue={0}
-            maximumValue={duration}
+            maximumValue={playbackDuration}
             value={playbackPosition}
             minimumTrackTintColor="#ee641f"
             maximumTrackTintColor="#fff"
             thumbTintColor="#ee641f"
-            onSlidingStart={handlePause}
+            onSlidingStart={pauseAudio}
             onSlidingComplete={(position) => {
-              handleSetPlaybackPosition(position);
-              handlePlay();
+              seek(position);
+              playLoadedAudio();
             }}
           />
         </View>
         <View style={styles.controlButtonsContainer}>
-          <TouchableOpacity onPress={handleRewind} style={styles.button}>
+          <TouchableOpacity onPress={rewind} style={styles.button}>
             <AntDesign name="banckward" size={20} color="white" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.pauseButton}>
             <MaterialCommunityIcons
-              onPress={playing ? handlePause : handlePlay}
-              name={playing ? "pause" : "play"}
+              onPress={playLoadedAudio}
+              name={isPlaying ? "pause" : "play"}
               size={48}
               color="white"
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={handleFastForward} style={styles.button}>
+          <TouchableOpacity onPress={fastForward} style={styles.button}>
             <AntDesign name="forward" size={20} color="white" />
           </TouchableOpacity>
         </View>
@@ -296,6 +252,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: 100,
     backgroundColor: "#ee641f",
+  },
+  counterStyle: {
+    color: "white",
+    fontSize: 17,
   },
 });
 

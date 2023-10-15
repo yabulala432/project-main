@@ -1,9 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import ListItem from "../components/ListItem";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
-import { useKdaseTitle } from "../hooks/useKdase";
+import { useZemaTitle } from "../hooks/useKdase";
+import { endpoint } from "../env/urls";
 
 interface props {
   navigation: any;
@@ -11,15 +12,39 @@ interface props {
 }
 
 const ListScreen = ({ navigation, route }: props) => {
+  const { name } = route?.params?.item;
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: route.params.item.title,
+      headerTitleAlign: "flex-start",
+      headerTitleStyle: {
+        fontSize: 20,
+        fontWeight: "bold",
+      },
+      backTitleVisible: true,
+      headerBackTitle: "ተመለስ",
+      headerBackTitleStyle: {
+        fontSize: 20,
+        fontWeight: "bold",
+      },
+      headerBackTitleVisible: true,
     });
   }, []);
 
-  const { data, loading } = useKdaseTitle();
+  const { data, loading } = useZemaTitle(name);
 
-  // console.log(data);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const fetchAllData = async () => {
+    const response = await fetch(
+      `${endpoint}/geez/audio/${route?.params?.item}`
+    );
+    const data = await response.json();
+    return data;
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
@@ -28,6 +53,7 @@ const ListScreen = ({ navigation, route }: props) => {
           key={index}
           title={item}
           onPress={() => {
+            setSelectedItem(item);
             navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, { item });
           }}
         />

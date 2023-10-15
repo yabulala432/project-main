@@ -3,8 +3,8 @@ import React from "react";
 import { Text, StyleSheet, Platform } from "react-native";
 
 interface props {
-  children: string;
-  style: Object;
+  children: any;
+  style?: Object;
 }
 
 const AppText = ({ children, style }: props) => {

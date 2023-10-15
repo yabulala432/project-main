@@ -5,16 +5,14 @@ import { endpoint } from "../env/urls";
 
 const url = endpoint;
 
-export const useKdaseTitle = () => {
+export const useZemaTitle = (zema: string) => {
   const [data, setData] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
-  const playSound = async () => {};
-
   const fetchTitleOfKdase = async () => {
     await axios
-      .get(`${url}/titles`)
+      .get(`${url}/${zema}/titles`)
       .then((res) => {
         setData(res.data);
         setLoading(false);
@@ -33,13 +31,14 @@ export const useKdaseTitle = () => {
   return { data, loading, error };
 };
 
-export const useKdaseAmharicImage = (title: string) => {
+/**
+export const useZemaAmharicImage = (zema: string, title: string) => {
   const [data, setData] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
   const fetchKdaseByTitle = async () => {
-    console.log(`${url}/amharic/image/${title}`, "line 38");
+    console.log(`${url}/${zema}/amharic/image/${title}`, "line 38");
     await axios
       .get(`${url}/amharic/image/${title}`)
       .then((res) => {
@@ -59,3 +58,4 @@ export const useKdaseAmharicImage = (title: string) => {
 
   return { data, loading, error };
 };
+*/
