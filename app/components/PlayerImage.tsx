@@ -1,24 +1,32 @@
 import { Dimensions, Image, StyleSheet, ScrollView, View } from "react-native";
 import React from "react";
-// import { ScrollView } from "react-native-gesture-handler";
 
 interface props {
   imageUrl?: string;
   style?: object;
   source?: any;
+  width?: number;
+  height?: number;
+  resizeMode?: any;
 }
 
-const PlayerImage = ({ imageUrl, style, source }: props) => {
-  const { width } = Dimensions.get("window");
+const PlayerImage = ({
+  imageUrl,
+  style,
+  source,
+  width,
+  height,
+  resizeMode,
+}: props) => {
+  const { width: window } = Dimensions.get("window");
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { height: height }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
-          // @ts-ignore
           source={source ? source : { uri: imageUrl }}
-          resizeMode="stretch"
-          width={width - 30}
-          height={350}
+          width={width ? width : window - 30}
+          height={height ? height : 350}
+          resizeMode={resizeMode ? resizeMode : "stretch"}
           style={[styles.imageStyle, style]}
         />
       </ScrollView>

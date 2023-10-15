@@ -44,9 +44,13 @@ const AudioPlayerProvider = ({ children }: any) => {
       interval = setInterval(() => {
         handlePlaybackDurationUpdate();
       }, 1000);
-    } else {
-      clearInterval(interval!);
     }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, [isPlaying]);
 
   const handlePlaybackDurationUpdate = async () => {

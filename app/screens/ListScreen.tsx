@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+import { endpoint } from "../env/urls";
 import ListItem from "../components/ListItem";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 import { useZemaTitle } from "../hooks/useKdase";
-import { endpoint } from "../env/urls";
 
 interface props {
   navigation: any;

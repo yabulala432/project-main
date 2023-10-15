@@ -17,7 +17,7 @@ interface props {
   navigation: any;
 }
 
-const PlayerScreen = ({ route, navigation }: props) => {
+const PlayerScreen = ({ navigation }: props) => {
   const {
     fastForward,
     isPlaying,
@@ -37,15 +37,9 @@ const PlayerScreen = ({ route, navigation }: props) => {
     buttonTitle: "ግእዝ",
     imageUrl: "amharic",
   });
-  const routeData = route?.params?.item;
+  // const routeData = route?.params?.item;
 
   const [position, setPosition] = useState<string>("00:00");
-
-  if (!routeData) return null;
-
-  useEffect(() => {
-    loadAudio({ uri: `${endpoint}/geez/audio/${route?.params?.item}` });
-  }, [route?.params?.item]);
 
   const formatPlaybackPosition = (position: number | undefined): string => {
     if (!position) return "00:00";
@@ -93,7 +87,7 @@ const PlayerScreen = ({ route, navigation }: props) => {
 
       <View style={styles.middleContainer}>
         <PlayerImage
-          imageUrl={`${url}/${imageState.imageUrl}/image/${routeData}`}
+          source={require("../../assets/icon.png")}
           style={styles.image}
         />
         <View>
@@ -109,13 +103,6 @@ const PlayerScreen = ({ route, navigation }: props) => {
               });
             }}
           />
-        </View>
-
-        <View style={styles.titleContainer}>
-          <AppText style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-            {routeData}
-          </AppText>
-          <Text style={{ color: "grey", fontSize: 17 }}></Text>
         </View>
       </View>
 

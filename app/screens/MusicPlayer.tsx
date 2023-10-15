@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -8,23 +8,36 @@ import {
   Text,
   Animated,
   NativeSyntheticEvent,
-  Button,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { data, fetchAll } from "../services/fetchService";
 import AppButton from "../components/AppButton";
+import AppText from "../components/AppText";
+import { AudioPlayerContext } from "../contexts/AudioPlayerContext";
+import PlayerImage from "../components/PlayerImage";
 
 const { width } = Dimensions.get("window");
 
 const MusicPlayer = ({ route }: any) => {
   const [songs, setSongs] = useState<data[]>([]);
-  const [geezAmhImage, setGeezAmhImage] = useState<"geez" | "amharic">("geez");
+  const [imageState, setImageState] = useState<"አማርኛ" | "ግእዝ">("ግእዝ");
+
+  const {
+    fastForward,
+    isPlaying,
+    loadAudio,
+    pauseAudio,
+    playbackDuration,
+    playbackPosition,
+    playPauseLoadedAudio,
+    rewind,
+    seek,
+  } = useContext(AudioPlayerContext);
 
   const fetchData = async () => {
     const data: data[] = await fetchAll(route.params.item.name);
     setSongs(data);
-    console.log(data[0].amharicImage);
     return data;
   };
   useEffect(() => {
@@ -32,6 +45,21 @@ const MusicPlayer = ({ route }: any) => {
   }, []);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [position, setPosition] = useState<string>("00:00");
+
+  useEffect(() => {
+    setPosition(formatDuration(playbackPosition));
+  }, [playbackPosition]);
+
+  const formatDuration = (seconds: number | undefined): string => {
+    if (!seconds) return "00:00";
+    const minutes = Math.floor(seconds! / 60);
+    const remainingSeconds = seconds! % 60;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const formattedSeconds =
+      remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {
@@ -39,19 +67,17 @@ const MusicPlayer = ({ route }: any) => {
       setCurrentIndex(index);
     });
 
-    console.log({ currentIndex });
+    // console.log({ currentIndex });
+    loadAudio({ uri: songs[currentIndex]?.geezAudio });
 
     return () => {
       scrollX.removeAllListeners();
     };
-  }, [handleScroll]);
+  }, [currentIndex]);
 
-  function handleScroll(event: NativeSyntheticEvent<any>) {
-    // console.log({currentIndex});
-  }
-
-  //   const renderSongs =
-
+  //   function handleScroll(event: NativeSyntheticEvent<any>) {
+  //     // console.log({ event });
+  //   }
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
@@ -75,34 +101,25 @@ const MusicPlayer = ({ route }: any) => {
               <Animated.View
                 style={[styles.mainImageWrapper, styles.elevation]}
               >
-                <Image
+                <PlayerImage
                   source={{
                     uri:
-                      geezAmhImage === "geez"
-                        ? item.geezImage
-                        : item.amharicImage,
+                      imageState === "ግእዝ" ? item.geezImage : item.amharicImage,
                   }}
-                  width={300}
-                  height={340}
+                  width={width}
+                  height={400}
                   resizeMode="stretch"
                   style={styles.musicImage}
                 />
-                <AppButton
-                  style={{
-                    position: "relative",
-                    top: 10,
-                    right: 10,
-                    width: 100,
-                    height: 50,
-                    alignSelf: "center",
-                  }}
-                  title={geezAmhImage}
-                  onPress={() =>
-                    setGeezAmhImage(
-                      geezAmhImage === "amharic" ? "geez" : "amharic"
-                    )
-                  }
-                />
+                <View style={[styles.middleContainer]}>
+                  <AppButton
+                    style={styles.buttonStyle}
+                    title={imageState === "ግእዝ" ? "አማርኛ" : "ግእዝ"}
+                    onPress={() => {
+                      setImageState(imageState === "ግእዝ" ? "አማርኛ" : "ግእዝ");
+                    }}
+                  />
+                </View>
               </Animated.View>
             );
           }}
@@ -113,74 +130,69 @@ const MusicPlayer = ({ route }: any) => {
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             {
               useNativeDriver: true,
-              listener: (event: NativeSyntheticEvent<any>) =>
-                handleScroll(event),
+              //   listener: (event: NativeSyntheticEvent<any>) =>
+              //     handleScroll(event),
             }
           )}
           showsHorizontalScrollIndicator={false}
           centerContent
         />
-
-        {/* <View>
-          <Text style={[styles.songTitle, styles.songContent]}>
-            {songs[currentIndex].title}
-          </Text>
-        </View> */}
-
-        {/* slider */}
-        <View>
-          <Slider
-            style={styles.progressBar}
-            value={10}
-            minimumValue={100}
-            maximumValue={1}
-            minimumTrackTintColor="#ffd369"
-            maximumTrackTintColor="#fff"
-            thumbTintColor="#ffd369"
-            onSlidingComplete={() => {}}
-          />
-        </View>
-
-        {/* music durations */}
-        <View style={styles.duration}>
-          <Text style={styles.durationText}>00:00</Text>
-          <Text style={styles.durationText}>00:00</Text>
-        </View>
-
-        {/* music controls */}
-        <View style={styles.musicControlContainer}>
-          <TouchableOpacity>
-            <Ionicons name="play-skip-back-outline" size={35} color="#ffd369" />
-          </TouchableOpacity>
-          <TouchableOpacity
-          // onPress={() => togglePlayback(playbackState)}
+        <View style={styles.playerUtilsContainer}>
+          {
+            <View>
+              {songs[currentIndex] && (
+                <Text style={[styles.songTitle, styles.songContent]}>
+                  {songs[currentIndex]?.title}
+                </Text>
+              )}
+            </View>
+          }
+          <View
+            style={{
+              width: "100%",
+            }}
           >
-            <Ionicons name={"ios-pause-circle"} size={75} color="#ffd369" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons
-              name="play-skip-forward-outline"
-              size={38}
-              color="#ffd369"
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <AppText style={styles.counterStyle}>{position}</AppText>
+              <AppText style={styles.counterStyle}>
+                {playbackDuration ? formatDuration(playbackDuration) : "00:00"}
+              </AppText>
+            </View>
+            <Slider
+              style={{ width: "100%", height: 40 }}
+              minimumValue={0}
+              maximumValue={playbackDuration}
+              value={playbackPosition}
+              minimumTrackTintColor="#ee641f"
+              maximumTrackTintColor="#fff"
+              thumbTintColor="#ee641f"
+              onSlidingStart={pauseAudio}
+              onSlidingComplete={(position) => {
+                seek(position);
+                playPauseLoadedAudio();
+              }}
             />
-          </TouchableOpacity>
-        </View>
-      </View>
+          </View>
+          <View style={styles.controlButtonsContainer}>
+            <TouchableOpacity onPress={rewind} style={styles.button}>
+              <AntDesign name="banckward" size={20} color="white" />
+            </TouchableOpacity>
 
-      <View style={styles.bottomContainer}>
-        <View style={styles.bottomIcons}>
-          <TouchableOpacity>
-            <Ionicons name="heart-outline" size={38} color="#888888" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="repeat" size={38} color="#888888" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="share-outline" size={38} color="#888888" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="ellipsis-horizontal" size={38} color="#888888" />
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.pauseButton}>
+              <MaterialCommunityIcons
+                onPress={playPauseLoadedAudio}
+                name={isPlaying ? "pause" : "play"}
+                size={48}
+                color="white"
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={fastForward} style={styles.button}>
+              <AntDesign name="forward" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -191,16 +203,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#222831",
+    height: "100%",
   },
   mainContainer: {
-    alignItems: "center",
     flex: 1,
-    justifyContent: "center",
   },
   bottomContainer: {
     alignItems: "center",
     width: width,
-    backgroundColor: "#393e46",
     marginTop: 40,
   },
   bottomIcons: {
@@ -208,16 +218,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
   },
+  middleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   mainImageWrapper: {
     width: width,
-    alignSelf: "center",
+    alignSelf: "flex-start",
     height: 340,
+  },
+  buttonStyle: {
+    // alignSelf: "center",
+    height: 50,
+    marginVertical: 10,
+    width: 100,
+    backgroundColor: "#ee641f",
   },
   musicImage: {
     borderRadius: 15,
-    height: 340,
+    height: 370,
     resizeMode: "stretch",
-    width: 300,
+    width: width - 10,
     alignSelf: "center",
   },
 
@@ -264,6 +285,42 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "60%",
     marginTop: 10,
+  },
+  playerUtilsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    paddingVertical: 40,
+    width: "100%",
+  },
+  counterStyle: {
+    color: "white",
+    fontSize: 17,
+  },
+  controlButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingBottom: 40,
+    width: "100%",
+  },
+  pauseButton: {
+    backgroundColor: "#ee641f",
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 15,
+  },
+  button: {
+    backgroundColor: "#282b30",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 15,
   },
 });
 

@@ -30,23 +30,9 @@ export const TabNav = ({ route }: any) => {
           headerShown: false,
         }}
         name={SCREEN_NAMES.PLAYER_SCREEN}
-        component={PlayerScreen}
+        component={MusicPlayer}
         initialParams={{ item }}
       />
     </Tab.Navigator>
   );
 };
-
-// screenOptions={({ route }) => {
-//   return {
-//     tabBarIcon: ({ focused, color, size }: any) => {
-//       let iconName = "list";
-//       if (route.name === SCREEN_NAMES.HOME_SCREEN) {
-//         iconName = focused ? "home" : "home-outline";
-//       } else if (route.name === SCREEN_NAMES.LIST_SCREEN) {
-//         iconName = focused ? "list" : "list-outline";
-//       }
-//       return <Ionicons name={iconName} size={size} color={color} />;
-//     },
-//   };
-// }}
