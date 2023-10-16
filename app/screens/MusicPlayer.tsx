@@ -38,6 +38,7 @@ const MusicPlayer = ({ route }: any) => {
   const fetchData = async () => {
     const data: data[] = await fetchAll(route.params.item.name);
     setSongs(data);
+    await loadAudio({ uri: data[0].geezAudio });
     return data;
   };
   useEffect(() => {
@@ -66,10 +67,7 @@ const MusicPlayer = ({ route }: any) => {
       const index = Math.floor(value / width);
       setCurrentIndex(index);
     });
-
-    // console.log({ currentIndex });
     loadAudio({ uri: songs[currentIndex]?.geezAudio });
-
     return () => {
       scrollX.removeAllListeners();
     };
