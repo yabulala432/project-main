@@ -34,8 +34,6 @@ const ListScreen = ({ navigation, route }: props) => {
 
   const { data, loading } = useZemaTitle(name);
 
-  const [selectedItem, setSelectedItem] = useState<any>(null);
-
   const fetchAllData = async () => {
     const response = await fetch(
       `${endpoint}/geez/audio/${route?.params?.item}`
@@ -53,8 +51,9 @@ const ListScreen = ({ navigation, route }: props) => {
           key={index}
           title={item}
           onPress={() => {
-            setSelectedItem(item);
-            navigation.navigate(SCREEN_NAMES.PLAYER_SCREEN, { item });
+            navigation.navigate(SCREEN_NAMES.Zema_PLAYER_SCREEN, {
+              selectedIndex: index,
+            });
           }}
         />
       ))}

@@ -1,25 +1,46 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import ListScreen from "../screens/ListScreen";
 import SCREEN_NAMES from "./SCREEN_NAMES";
-import PlayerScreen from "../screens/PlayerScreen";
-import MusicPlayer from "../screens/MusicPlayer";
+import ZemaPlayerScreen from "../screens/ZemaPlayerScreen";
+import { colors } from "../config/colors";
 
 const Tab = createBottomTabNavigator();
 export const TabNav = ({ route }: any) => {
-  console.log({ route });
   const { item } = route.params;
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: colors.primary,
+          width: "90%",
+          alignSelf: "center",
+          position: "relative",
+          bottom: 10,
+          height: 60,
+        },
+        tabBarActiveTintColor: colors.secondary,
+        tabBarLabelStyle: {
+          fontSize: 15,
+          fontWeight: "bold",
+        },
+        tabBarActiveBackgroundColor: colors.primary,
+        tabBarInactiveBackgroundColor: colors.white,
+      }}
+    >
       <Tab.Screen
         options={{
           headerStyle: {
-            backgroundColor: "green",
+            backgroundColor: "#ee641f",
           },
           headerTitleAlign: "center",
           headerTintColor: "white",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="church" color={color} size={size} />
+          ),
         }}
         name={SCREEN_NAMES.LIST_SCREEN}
         component={ListScreen}
@@ -28,9 +49,17 @@ export const TabNav = ({ route }: any) => {
       <Tab.Screen
         options={{
           headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="speaker-wireless"
+              color={color}
+              size={size}
+            />
+          ),
+          tabBarLabel: () => null,
         }}
-        name={SCREEN_NAMES.PLAYER_SCREEN}
-        component={MusicPlayer}
+        name={SCREEN_NAMES.Zema_PLAYER_SCREEN}
+        component={ZemaPlayerScreen}
         initialParams={{ item }}
       />
     </Tab.Navigator>

@@ -4,25 +4,25 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Image,
   Text,
   Animated,
-  NativeSyntheticEvent,
+  FlatList,
 } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import { data, fetchAll } from "../services/fetchService";
+
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import { AudioPlayerContext } from "../contexts/AudioPlayerContext";
+import { colors } from "../config/colors";
+import { data, fetchAll } from "../services/fetchService";
 import PlayerImage from "../components/PlayerImage";
 
 const { width } = Dimensions.get("window");
 
-const MusicPlayer = ({ route }: any) => {
+const ZemaPlayerScreen = ({ route }: any) => {
   const [songs, setSongs] = useState<data[]>([]);
   const [imageState, setImageState] = useState<"አማርኛ" | "ግእዝ">("ግእዝ");
-
   const {
     fastForward,
     isPlaying,
@@ -47,6 +47,20 @@ const MusicPlayer = ({ route }: any) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [position, setPosition] = useState<string>("00:00");
+  const flatListRef = useRef<FlatList>(null);
+
+  useEffect(() => {
+    navigateToSong(route.params.selectedIndex);
+  }, [route.params.selectedIndex]);
+
+  const navigateToSong = (index: number) => {
+    setCurrentIndex(index);
+    try {
+      flatListRef.current?.scrollToIndex({ index });
+    } catch (error) {
+      console.log("Error Scrolling to index ", index, error);
+    }
+  };
 
   useEffect(() => {
     setPosition(formatDuration(playbackPosition));
@@ -73,14 +87,12 @@ const MusicPlayer = ({ route }: any) => {
     };
   }, [currentIndex]);
 
-  //   function handleScroll(event: NativeSyntheticEvent<any>) {
-  //     // console.log({ event });
-  //   }
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         {/* image */}
         <Animated.FlatList
+          ref={flatListRef}
           data={songs}
           keyExtractor={(item) => item.title}
           renderItem={({ item, index }) => {
@@ -163,9 +175,9 @@ const MusicPlayer = ({ route }: any) => {
               minimumValue={0}
               maximumValue={playbackDuration}
               value={playbackPosition}
-              minimumTrackTintColor="#ee641f"
-              maximumTrackTintColor="#fff"
-              thumbTintColor="#ee641f"
+              minimumTrackTintColor={colors.primary}
+              maximumTrackTintColor={colors.teritiary}
+              thumbTintColor={colors.primary}
               onSlidingStart={pauseAudio}
               onSlidingComplete={(position) => {
                 seek(position);
@@ -200,7 +212,7 @@ const MusicPlayer = ({ route }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#222831",
+    backgroundColor: colors.white,
     height: "100%",
   },
   mainContainer: {
@@ -226,21 +238,22 @@ const styles = StyleSheet.create({
     height: 340,
   },
   buttonStyle: {
-    // alignSelf: "center",
     height: 50,
     marginVertical: 10,
     width: 100,
-    backgroundColor: "#ee641f",
+    backgroundColor: colors.primary,
   },
   musicImage: {
     borderRadius: 15,
     height: 370,
     resizeMode: "stretch",
-    width: width - 10,
+    width: width,
     alignSelf: "center",
+    borderBottomWidth: 1,
+    borderColor: colors.primary,
   },
-
   elevation: {
+    borderColor: colors.primary,
     elevation: 5,
     shadowColor: "#ccc",
     shadowOffset: {
@@ -252,7 +265,7 @@ const styles = StyleSheet.create({
   },
   songContent: {
     textAlign: "center",
-    color: "#EEEEEE",
+    color: colors.teritiary,
   },
   songTitle: {
     fontSize: 18,
@@ -273,10 +286,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  durationText: {
-    color: "#fff",
-    fontWeight: "500",
-  },
   musicControlContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -292,7 +301,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   counterStyle: {
-    color: "white",
+    color: colors.primary,
     fontSize: 17,
   },
   controlButtonsContainer: {
@@ -303,7 +312,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pauseButton: {
-    backgroundColor: "#ee641f",
+    backgroundColor: colors.primary, //"#ee641f",
     width: 70,
     height: 70,
     borderRadius: 35,
@@ -312,7 +321,7 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   button: {
-    backgroundColor: "#282b30",
+    backgroundColor: colors.secondary,
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -322,4 +331,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MusicPlayer;
+export default ZemaPlayerScreen;
