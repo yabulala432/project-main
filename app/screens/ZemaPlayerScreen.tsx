@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pauseButton: {
-    backgroundColor: colors.primary, //"#ee641f",
+    backgroundColor: colors.primary,
     width: 70,
     height: 70,
     borderRadius: 35,
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   button: {
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.teritiary,
     width: 60,
     height: 60,
     borderRadius: 30,

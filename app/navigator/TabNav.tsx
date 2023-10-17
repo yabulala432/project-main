@@ -22,7 +22,7 @@ export const TabNav = ({ route }: any) => {
           bottom: 10,
           height: 60,
         },
-        tabBarActiveTintColor: colors.secondary,
+        tabBarActiveTintColor: colors.teritiary,
         tabBarLabelStyle: {
           fontSize: 15,
           fontWeight: "bold",
