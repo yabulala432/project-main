@@ -14,7 +14,6 @@ export interface data {
 const url = endpoint;
 
 export const fetchAll = async (zemaName: string): Promise<data[]> => {
-  //   console.log(`${url}/${zemaName}/getAll`);
   const res = await axios
     .get<Array<data>>(`${url}/${zemaName}/getAll`)
     .then((res) => {
