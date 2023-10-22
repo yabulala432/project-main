@@ -2,15 +2,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { colors } from "../config/colors";
 import ListScreen from "../screens/ListScreen";
 import SCREEN_NAMES from "./SCREEN_NAMES";
 import ZemaPlayerScreen from "../screens/ZemaPlayerScreen";
-import { colors } from "../config/colors";
 
 const Tab = createBottomTabNavigator();
+
 export const TabNav = ({ route }: any) => {
   const { item } = route.params;
-
   return (
     <Tab.Navigator
       screenOptions={{
