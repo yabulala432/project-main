@@ -25,8 +25,8 @@ const PlayerImage = ({
         <Image
           source={source ? source : { uri: imageUrl }}
           width={width ? width : window - 30}
-          height={height ? height : 350}
-          resizeMode={resizeMode ? resizeMode : "stretch"}
+          height={height ? height : 550}
+          resizeMode={resizeMode ? resizeMode : "cover"}
           style={[styles.imageStyle, style]}
         />
       </ScrollView>

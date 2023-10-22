@@ -36,8 +36,14 @@ const ZemaPlayerScreen = ({ route }: any) => {
   } = useContext(AudioPlayerContext);
 
   const fetchData = async () => {
+    // console.log("route.params.item.names", route.params.item.name);
     const data: data[] = await fetchAll(route.params.item.name);
     setSongs(data);
+    if (route.params.selectedIndex) {
+      navigateToSong(route.params.selectedIndex);
+      await loadAudio({ uri: data[route.params.selectedIndex].geezAudio });
+      return data;
+    }
     await loadAudio({ uri: data[0].geezAudio });
     return data;
   };
@@ -45,13 +51,10 @@ const ZemaPlayerScreen = ({ route }: any) => {
     fetchData();
   }, []);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [position, setPosition] = useState<string>("00:00");
   const flatListRef = useRef<FlatList>(null);
-
-  useEffect(() => {
-    navigateToSong(route.params.selectedIndex);
-  }, [route.params.selectedIndex]);
 
   const navigateToSong = (index: number) => {
     setCurrentIndex(index);
@@ -61,6 +64,9 @@ const ZemaPlayerScreen = ({ route }: any) => {
       console.log("Error Scrolling to index ", index, error);
     }
   };
+  useEffect(() => {
+    navigateToSong(route.params.selectedIndex);
+  }, [route.params.selectedIndex]);
 
   useEffect(() => {
     setPosition(formatDuration(playbackPosition));
@@ -81,7 +87,10 @@ const ZemaPlayerScreen = ({ route }: any) => {
       const index = Math.floor(value / width);
       setCurrentIndex(index);
     });
-    loadAudio({ uri: songs[currentIndex]?.geezAudio });
+    loadAudio({
+      uri: songs[currentIndex]?.geezAudio,
+    });
+    // console.log("songs", songs[currentIndex]);
     return () => {
       scrollX.removeAllListeners();
     };
@@ -117,8 +126,8 @@ const ZemaPlayerScreen = ({ route }: any) => {
                       imageState === "ግእዝ" ? item.geezImage : item.amharicImage,
                   }}
                   width={width}
-                  height={400}
-                  resizeMode="stretch"
+                  // height={400}
+                  resizeMode="cover"
                   style={styles.musicImage}
                 />
                 <View style={[styles.middleContainer]}>

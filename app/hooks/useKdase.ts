@@ -31,16 +31,14 @@ export const useZemaTitle = (zema: string) => {
   return { data, loading, error };
 };
 
-/**
-export const useZemaAmharicImage = (zema: string, title: string) => {
-  const [data, setData] = useState<any>("");
+export const useKdase = (zema: string, kdase: string) => {
+  const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
-  const fetchKdaseByTitle = async () => {
-    console.log(`${url}/${zema}/amharic/image/${title}`, "line 38");
+  const fetchKdase = async () => {
     await axios
-      .get(`${url}/amharic/image/${title}`)
+      .get(`${url}/${zema}/${kdase}`)
       .then((res) => {
         setData(res.data);
         setLoading(false);
@@ -53,9 +51,8 @@ export const useZemaAmharicImage = (zema: string, title: string) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchKdaseByTitle();
+    fetchKdase();
   }, []);
 
   return { data, loading, error };
 };
-*/
