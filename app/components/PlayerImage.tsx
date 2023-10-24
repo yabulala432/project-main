@@ -25,7 +25,7 @@ const PlayerImage = ({
         <Image
           source={source ? source : { uri: imageUrl }}
           width={width ? width : window - 30}
-          height={height ? height : 550}
+          height={height ? height : 700}
           resizeMode={resizeMode ? resizeMode : "cover"}
           style={[styles.imageStyle, style]}
         />

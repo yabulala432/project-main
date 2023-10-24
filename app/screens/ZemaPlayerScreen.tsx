@@ -90,7 +90,6 @@ const ZemaPlayerScreen = ({ route }: any) => {
     loadAudio({
       uri: songs[currentIndex]?.geezAudio,
     });
-    // console.log("songs", songs[currentIndex]);
     return () => {
       scrollX.removeAllListeners();
     };
@@ -105,16 +104,15 @@ const ZemaPlayerScreen = ({ route }: any) => {
           data={songs}
           keyExtractor={(item) => item.title}
           renderItem={({ item, index }) => {
-            const inputRange = [
-              (index - 1) * width,
-              index * width,
-              (index + 1) * width,
-            ];
-
-            const opacity = scrollX.interpolate({
-              inputRange,
-              outputRange: [0, 1, 0],
-            });
+            // const inputRange = [
+            //   (index - 1) * width,
+            //   index * width,
+            //   (index + 1) * width,
+            // ];
+            // const opacity = scrollX.interpolate({
+            //   inputRange,
+            //   outputRange: [0, 1, 0],
+            // });
 
             return (
               <Animated.View
@@ -126,7 +124,7 @@ const ZemaPlayerScreen = ({ route }: any) => {
                       imageState === "ግእዝ" ? item.geezImage : item.amharicImage,
                   }}
                   width={width}
-                  // height={400}
+                  // height={500}
                   resizeMode="cover"
                   style={styles.musicImage}
                 />
