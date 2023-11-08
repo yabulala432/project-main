@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
-// import { endpoint } from "../env/urls";
 import ListItem from "../components/ListItem";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 import { useZemaTitle } from "../hooks/useKdase";
@@ -53,9 +52,7 @@ const ListScreen = ({ navigation, route }: props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // alignItems: "center",
-  },
+  container: {},
 });
 
 export default ListScreen;
