@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { endpoint } from "../env/urls";
+// import { endpoint } from "../env/urls";
 import ListItem from "../components/ListItem";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 import { useZemaTitle } from "../hooks/useKdase";
@@ -23,7 +23,6 @@ const ListScreen = ({ navigation, route }: props) => {
         fontWeight: "bold",
       },
       backTitleVisible: true,
-      headerBackTitle: "ተመለስ",
       headerBackTitleStyle: {
         fontSize: 20,
         fontWeight: "bold",
@@ -33,14 +32,6 @@ const ListScreen = ({ navigation, route }: props) => {
   }, []);
 
   const { data, loading } = useZemaTitle(name);
-
-  const fetchAllData = async () => {
-    const response = await fetch(
-      `${endpoint}/geez/audio/${route?.params?.item}`
-    );
-    const data = await response.json();
-    return data;
-  };
 
   useEffect(() => {}, []);
 

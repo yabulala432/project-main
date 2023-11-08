@@ -5,13 +5,13 @@ import Slider from "@react-native-community/slider";
 
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
-import { endpoint } from "../env/urls";
+// import { endpoint } from "../env/urls";
 import PlayerImage from "../components/PlayerImage";
 import Screen from "../components/Screen";
 import SCREEN_NAMES from "../navigator/SCREEN_NAMES";
 import { AudioPlayerContext } from "../contexts/AudioPlayerContext";
 
-const url = endpoint;
+// const url = endpoint;
 interface props {
   route: any;
   navigation: any;
