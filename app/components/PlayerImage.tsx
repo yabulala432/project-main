@@ -25,7 +25,7 @@ const PlayerImage = ({
         <Image
           source={source ? source : { uri: imageUrl }}
           width={width ? width : window - 30}
-          height={height ? height : 700}
+          // height={height ? height : 700}
           resizeMode={resizeMode ? resizeMode : "cover"}
           style={[styles.imageStyle, style]}
         />
@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
   imageStyle: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    backgroundColor: "black",
+    width: "50%",
+    height: 500,
   },
 });
 
